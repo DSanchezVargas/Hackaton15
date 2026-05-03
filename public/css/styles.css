@@ -1,0 +1,231 @@
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #f0f2f5;
+  color: #1a1a2e;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Auth ──────────────────────────────────────────────────── */
+#pantalla-auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #16213e 0%, #0f3460 50%, #533483 100%);
+}
+
+.auth-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+
+.auth-card h1 { text-align: center; margin-bottom: 1.5rem; font-size: 1.8rem; color: #0f3460; }
+
+.tabs { display: flex; gap: .5rem; margin-bottom: 1.5rem; }
+.tab {
+  flex: 1; padding: .6rem; border: none; border-radius: 8px;
+  background: #e8ecf1; cursor: pointer; font-size: .95rem; font-weight: 600;
+  transition: background .2s, color .2s;
+}
+.tab.active { background: #0f3460; color: #fff; }
+
+.tab-content { display: none; flex-direction: column; gap: .75rem; }
+.tab-content.active { display: flex; }
+
+/* ── Dashboard ─────────────────────────────────────────────── */
+#pantalla-dashboard { display: flex; flex-direction: column; height: 100vh; }
+
+header {
+  background: #0f3460;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .75rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+header h1 { font-size: 1.3rem; }
+.header-right { display: flex; align-items: center; gap: .75rem; }
+
+main {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+.panel {
+  background: #fff;
+  border-right: 1px solid #e0e4ea;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.panel-detail { border-right: none; padding: 1.5rem; overflow-y: auto; }
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem .5rem;
+}
+.panel-header h2 { font-size: 1.1rem; }
+
+#filtro-estado {
+  margin: 0 1rem .75rem;
+  padding: .4rem .6rem;
+  border: 1px solid #cdd2da;
+  border-radius: 8px;
+  font-size: .9rem;
+}
+
+/* Lista paquetes */
+#lista-paquetes {
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+}
+
+#lista-paquetes li {
+  padding: .85rem 1rem;
+  border-bottom: 1px solid #eef0f4;
+  cursor: pointer;
+  transition: background .15s;
+}
+#lista-paquetes li:hover,
+#lista-paquetes li.activo { background: #e9f0fb; }
+
+.pkg-codigo  { font-weight: 700; font-size: .8rem; color: #0f3460; }
+.pkg-dest    { font-size: .9rem; margin: .2rem 0; }
+.pkg-estado  { font-size: .78rem; }
+
+/* ── Badges de estado ──────────────────────────────────────── */
+.badge, .estado-badge {
+  display: inline-block;
+  padding: .2em .65em;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge { background: #533483; color: #fff; }
+
+.estado-pendiente   { background: #fef3c7; color: #92400e; }
+.estado-en_transito { background: #dbeafe; color: #1e40af; }
+.estado-entregado   { background: #d1fae5; color: #065f46; }
+.estado-cancelado   { background: #fee2e2; color: #991b1b; }
+
+/* ── Detalle ───────────────────────────────────────────────── */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem 1.5rem;
+  margin-bottom: 1.25rem;
+  background: #f8f9fb;
+  border-radius: 10px;
+  padding: 1rem;
+}
+.detail-grid .label { font-size: .8rem; color: #6b7280; }
+.detail-grid .value { font-weight: 600; }
+
+#panel-estado, #panel-ubicacion {
+  background: #f0f2f5;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+}
+#panel-estado h3, #panel-ubicacion h3, #detalle-paquete h3 { margin-bottom: .65rem; font-size: 1rem; }
+
+.row-inline { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+.row-inline input, .row-inline select { flex: 1; min-width: 120px; }
+
+/* ── Timeline seguimiento ──────────────────────────────────── */
+.timeline { list-style: none; padding-left: .5rem; }
+.timeline li {
+  position: relative;
+  padding: .5rem .75rem .5rem 1.5rem;
+  border-left: 2px solid #0f3460;
+  margin-bottom: .5rem;
+  font-size: .88rem;
+}
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: -6px; top: 10px;
+  width: 10px; height: 10px;
+  background: #0f3460;
+  border-radius: 50%;
+}
+.timeline li .t-desc  { font-weight: 600; }
+.timeline li .t-coord { color: #6b7280; font-size: .78rem; }
+.timeline li .t-time  { color: #9ca3af; font-size: .76rem; }
+
+/* ── Formularios ───────────────────────────────────────────── */
+label { font-size: .85rem; font-weight: 600; color: #374151; }
+input, select, textarea {
+  width: 100%;
+  padding: .55rem .75rem;
+  border: 1px solid #cdd2da;
+  border-radius: 8px;
+  font-size: .95rem;
+  transition: border-color .2s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #0f3460;
+  box-shadow: 0 0 0 3px rgba(15,52,96,.15);
+}
+textarea { resize: vertical; }
+
+.form-actions { display: flex; gap: .75rem; margin-top: .25rem; }
+
+/* ── Botones ───────────────────────────────────────────────── */
+.btn {
+  padding: .55rem 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: .9rem;
+  font-weight: 600;
+  background: #e8ecf1;
+  color: #1a1a2e;
+  transition: background .2s, transform .1s;
+}
+.btn:hover  { background: #d1d7e0; }
+.btn:active { transform: scale(.97); }
+.btn.primary { background: #0f3460; color: #fff; }
+.btn.primary:hover { background: #1a4a7a; }
+.btn.small { padding: .35rem .75rem; font-size: .82rem; }
+
+/* ── Mensajes ──────────────────────────────────────────────── */
+.msg-error { color: #dc2626; font-size: .85rem; min-height: 1.2em; }
+.msg-ok    { color: #16a34a; font-size: .85rem; min-height: 1.2em; }
+.muted     { color: #9ca3af; font-size: .9rem; }
+
+/* ── Toast ─────────────────────────────────────────────────── */
+#toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: #0f3460;
+  color: #fff;
+  padding: .75rem 1.25rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  font-size: .9rem;
+  z-index: 9999;
+  animation: fadeIn .3s ease;
+}
+@keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+
+/* ── Utilidades ────────────────────────────────────────────── */
+.hidden { display: none !important; }

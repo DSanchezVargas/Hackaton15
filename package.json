@@ -1,0 +1,22 @@
+{
+  "name": "hackaton15",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.4.1",
+    "express-session": "^1.19.0",
+    "mysql2": "^3.22.3",
+    "socket.io": "^4.8.3"
+  }
+}
