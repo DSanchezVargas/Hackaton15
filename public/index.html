@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curier Online</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+
+<!-- ═══ PANTALLA LOGIN / REGISTRO ═════════════════════════════ -->
+<div id="pantalla-auth">
+  <div class="auth-card">
+    <h1>📦 Curier Online</h1>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="login">Iniciar sesión</button>
+      <button class="tab" data-tab="registro">Registrarse</button>
+    </div>
+
+    <!-- Login -->
+    <form id="form-login" class="tab-content active">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="correo@ejemplo.com" required />
+      <label>Contraseña</label>
+      <input type="password" id="login-password" placeholder="••••••" required />
+      <button type="submit" class="btn primary">Entrar</button>
+      <p class="msg-error" id="login-error"></p>
+    </form>
+
+    <!-- Registro -->
+    <form id="form-registro" class="tab-content">
+      <label>Nombre</label>
+      <input type="text" id="reg-nombre" placeholder="Tu nombre" required />
+      <label>Email</label>
+      <input type="email" id="reg-email" placeholder="correo@ejemplo.com" required />
+      <label>Contraseña</label>
+      <input type="password" id="reg-password" placeholder="••••••" required />
+      <label>Rol</label>
+      <select id="reg-rol">
+        <option value="cliente">Cliente</option>
+        <option value="mensajero">Mensajero</option>
+      </select>
+      <button type="submit" class="btn primary">Registrarse</button>
+      <p class="msg-error" id="reg-error"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ═══ DASHBOARD ══════════════════════════════════════════════ -->
+<div id="pantalla-dashboard" class="hidden">
+
+  <!-- Barra superior -->
+  <header>
+    <h1>📦 Curier Online</h1>
+    <div class="header-right">
+      <span id="usuario-nombre"></span>
+      <span class="badge" id="usuario-rol"></span>
+      <button id="btn-logout" class="btn small">Salir</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ── Panel izquierdo: lista de paquetes ── -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Paquetes</h2>
+        <button id="btn-nuevo-paquete" class="btn small primary">+ Nuevo</button>
+      </div>
+
+      <!-- Filtro estado -->
+      <select id="filtro-estado">
+        <option value="">Todos</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="en_transito">En tránsito</option>
+        <option value="entregado">Entregado</option>
+        <option value="cancelado">Cancelado</option>
+      </select>
+
+      <ul id="lista-paquetes"></ul>
+    </section>
+
+    <!-- ── Panel derecho: detalle / formularios ── -->
+    <section class="panel panel-detail">
+
+      <!-- Formulario nuevo paquete -->
+      <div id="form-paquete-container" class="hidden">
+        <h2>Nuevo paquete</h2>
+        <form id="form-paquete">
+          <label>Descripción</label>
+          <input type="text" id="pkg-descripcion" placeholder="Descripción del paquete" required />
+          <label>Destinatario</label>
+          <input type="text" id="pkg-destinatario" placeholder="Nombre del destinatario" required />
+          <label>Dirección de entrega</label>
+          <input type="text" id="pkg-direccion" placeholder="Dirección completa" required />
+          <label>Mensaje (opcional)</label>
+          <textarea id="pkg-mensaje" rows="3" placeholder="Instrucciones especiales..."></textarea>
+          <div class="form-actions">
+            <button type="submit" class="btn primary">Enviar paquete</button>
+            <button type="button" class="btn" id="btn-cancelar-pkg">Cancelar</button>
+          </div>
+          <p class="msg-error" id="pkg-error"></p>
+          <p class="msg-ok"    id="pkg-ok"></p>
+        </form>
+      </div>
+
+      <!-- Detalle de paquete -->
+      <div id="detalle-paquete" class="hidden">
+        <h2>Detalle del paquete</h2>
+        <div class="detail-grid" id="detalle-info"></div>
+
+        <!-- Cambiar estado (mensajero / admin) -->
+        <div id="panel-estado" class="hidden">
+          <h3>Actualizar estado</h3>
+          <div class="row-inline">
+            <select id="nuevo-estado">
+              <option value="pendiente">Pendiente</option>
+              <option value="en_transito">En tránsito</option>
+              <option value="entregado">Entregado</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+            <button class="btn primary" id="btn-actualizar-estado">Actualizar</button>
+          </div>
+        </div>
+
+        <!-- Registrar ubicación (mensajero / admin) -->
+        <div id="panel-ubicacion" class="hidden">
+          <h3>Registrar ubicación</h3>
+          <div class="row-inline">
+            <input type="number" id="ubi-lat"  placeholder="Latitud"  step="0.0000001" />
+            <input type="number" id="ubi-lng"  placeholder="Longitud" step="0.0000001" />
+            <input type="text"   id="ubi-desc" placeholder="Descripción (p.ej. Bodega central)" />
+            <button class="btn primary" id="btn-registrar-ubicacion">Registrar</button>
+          </div>
+        </div>
+
+        <!-- Historial de seguimiento -->
+        <h3>Seguimiento</h3>
+        <ul id="historial-seguimiento" class="timeline"></ul>
+        <p id="sin-seguimiento" class="muted">Sin registros de seguimiento aún.</p>
+      </div>
+
+      <!-- Placeholder vacío -->
+      <div id="detalle-vacio">
+        <p class="muted">Selecciona un paquete para ver su detalle o crea uno nuevo.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast de notificación en tiempo real -->
+  <div id="toast" class="hidden"></div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>
